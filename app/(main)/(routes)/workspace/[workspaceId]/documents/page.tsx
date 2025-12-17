@@ -30,15 +30,15 @@ function DocumentsPage() {
       });
 
       toast.promise(promise, {
-        loading: "Creating a new note...",
-        success: "New note created!",
-        error: "Failed to create a new note.",
+        loading: "새 노트 만드는중...",
+        success: "새 노트가 만들어졌습니다!",
+        error: "새 노트를 만드는데 실패했습니다.",
       });
 
       const documentId = await promise;
       router.push(`/workspace/${workspaceId}/documents/${documentId}`);
     } catch (err) {
-      console.error("❌ Create failed:", err);
+      console.error("생성에 실패했습니다:", err);
     }
   };
 
@@ -61,11 +61,11 @@ function DocumentsPage() {
         priority
       />
       <h2 className="text-lg font-medium">
-        Welcome to {user?.firstName}&apos;s Coope
+        {user?.username}&apos;의 Coope에 온 걸 환영합니다!
       </h2>
       <Button onClick={onCreate}>
         <PlusCircle className="w-4 h-4 mr-2" />
-        Create a note
+        새 노트 생성
       </Button>
     </div>
   );

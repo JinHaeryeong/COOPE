@@ -21,7 +21,7 @@ export function SettingsModal() {
   const id = workspaceId as Id<"workspaces">
   const workspace = useQuery(
     api.workspace.getById,
-    id ? { id } : "skip" // ✅ id가 존재할 때만 쿼리 실행
+    id ? { id } : "skip" // id가 존재할 때만 쿼리 실행
   )
 
   const updateWorkspace = useMutation(api.workspace.rename)

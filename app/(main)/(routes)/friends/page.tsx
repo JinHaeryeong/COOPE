@@ -11,9 +11,8 @@ import FriendPage from "../../_components/friend"; // 친구(요청중, 수락�
 import FriendRequestList from "../../_components/friendRequestList";
 
 const ListOfFriends = () => {
-  const [searchUser, setSearchUser] = useState("");
   const { user } = useUser();
-  
+
   const friendList = useQuery(
     api.friends.getFriendsList,
     user?.id ? { id: user.id } : "skip"

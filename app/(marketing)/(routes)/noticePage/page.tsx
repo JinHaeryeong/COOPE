@@ -1,6 +1,6 @@
 "use client"
 
-import React from "react";
+import React, { Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useMutation, useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
@@ -15,18 +15,19 @@ import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, 
     Next Js 13v 이후부터는 useRouter등의 기능을 next/routes가 아니라 next/navigation에서 가져와야한다.. 이걸 몰라서 고생했다
     UI 수정 필요
 */
-const NoticePage = () => {
+const NoticePageContent = () => {
     const searchParams = useSearchParams();
     const router = useRouter();
     const noticeId = searchParams.get("noticeId"); // 공지사항 ID로 데이터를 가져옴
     const deleteNotice = useMutation(api.notices.deleteNotice);
     const { user } = useUser();
 
+    const notice = useQuery(api.notices.getById, noticeId ? { id: noticeId } : "skip");
+
     if (!noticeId) { //null 체크, 없어도 사이트 자체는 돌아가지만 IDE에서는 계속 오류라고 표시됨
         return <p>공지사항 ID가 유효하지 않습니다.</p>
     }
-    const notice = useQuery(api.notices.getById, { id: noticeId });
- 
+
 
     if (notice === undefined) {
         return <p>로딩 중...</p>;
@@ -93,7 +94,7 @@ const NoticePage = () => {
                             href={{
                                 pathname: '/noticeEditPage',
                                 query: { noticeId: notice?._id },
-                        }}
+                            }}
                         ><Button variant="outline" className="mr-2">수정</Button></Link>
                         <AlertDialog>
                             <AlertDialogTrigger asChild>
@@ -121,4 +122,10 @@ const NoticePage = () => {
     )
 };
 
-export default NoticePage;
+export default function NoticePage() {
+    return (
+        <Suspense fallback={<p>데이터를 불러오는 중...</p>}>
+            <NoticePageContent />
+        </Suspense>
+    );
+}

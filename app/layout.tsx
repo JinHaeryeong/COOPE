@@ -1,20 +1,9 @@
-import {
-  SignInButton,
-  SignedIn,
-  SignedOut,
-  UserButton
-} from '@clerk/clerk-react'
-
 import { Toaster } from "sonner";
 import "./globals.css";
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 import { ThemeProvider } from "@/components/providers/theme-provider";
 import { ConvexClientProvider } from "@/components/providers/convex-provider";
-import { ModalProvider } from '@/components/providers/modal-provider';
 import localFont from 'next/font/local'
-import { EdgeStoreProvider } from "@/lib/edgestore";
-
 const pretendard = localFont({
   src: "../public/fonts/PretendardVariable.woff2",
   display: "swap",
@@ -22,15 +11,6 @@ const pretendard = localFont({
   variable: "--font-pretendard"
 });
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
 
 export const metadata: Metadata = {
   title: "coope",
@@ -58,22 +38,19 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko" suppressHydrationWarning>
-      <body className={`${pretendard.variable} font-pretendard font-bold`}
+      <body className={`${pretendard.variable} font-sans`}
       >
         <ConvexClientProvider>
-        <EdgeStoreProvider>
           <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-          storageKey="coope-theme-2"
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+            storageKey="coope-theme-2"
           >
             <Toaster position="bottom-center" />
-            <ModalProvider />
             {children}
           </ThemeProvider>
-          </EdgeStoreProvider>
         </ConvexClientProvider>
       </body>
     </html>

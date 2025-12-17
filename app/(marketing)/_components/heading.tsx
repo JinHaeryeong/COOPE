@@ -8,39 +8,31 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import { Spinner } from "@/components/spinner";
 import { SignInButton } from "@clerk/clerk-react";
-import { Id } from "@/convex/_generated/dataModel";
 import { Logo } from "./logo";
 
 export const Heading = () => {
-  const router = useRouter();
   const { isAuthenticated, isLoading } = useConvexAuth();
   const { user } = useUser();
-  const createWorkspace = useMutation(api.workspace.createWorkspace);
-
   const workspaces = useQuery(api.workspace.getMyWorkspaces);
+  const createWorkspace = useMutation(api.workspace.createWorkspace);
+  const router = useRouter();
 
-  const handleStart = async () => {
-    if (!user) {
-      alert("로그인이 필요합니다.");
-      return;
-    }
 
-    const validWorkspaces = (workspaces ?? []).filter(
-      (ws): ws is { _id: Id<"workspaces">; name: string; role: string } => ws !== null
-    );
+  // 비즈니스 로직을 별도 핸들러로 깔끔하게 정리
+  const onEnter = async () => {
+    if (!user) return;
 
-    let workspaceId: Id<"workspaces">;
+    // Optional Chaining과 기본값 처리로 가독성 향상
+    const firstWorkspace = workspaces?.find(ws => ws !== null);
 
-    if (validWorkspaces.length > 0) {
-      workspaceId = validWorkspaces[0]._id;
+    if (firstWorkspace) {
+      router.push(`/workspace/${firstWorkspace._id}/documents`);
     } else {
-      // ✅ userId는 넘기지 않는다!
-      workspaceId = await createWorkspace({
+      const id = await createWorkspace({
         name: `${user.fullName || "내 워크스페이스"}`,
       });
+      router.push(`/workspace/${id}/documents`);
     }
-
-    router.push(`/workspace/${workspaceId}/documents`);
   };
 
   return (
@@ -55,7 +47,7 @@ export const Heading = () => {
         </div>
       )}
       {isAuthenticated && !isLoading && (
-        <Button onClick={handleStart}>
+        <Button onClick={onEnter}>
           시작하기
           <ArrowRight className="h-4 w-4 ml-2" />
         </Button>

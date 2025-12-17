@@ -11,12 +11,11 @@ import FriendPage from "../../../../_components/friend"; // 친구(요청중, �
 import FriendRequestList from "../../../../_components/friendRequestList";
 
 const ListOfFriends = () => {
-  const [searchUser, setSearchUser] = useState("");
   const { user } = useUser();
+  const friendList = useQuery(api.friends.get, user?.id ? { id: user.id } : "skip"); // Convex에서 제공하는 skip 기능을 쓰거나 논리 처리
   if (!user) {
     return;
   }
-  const friendList = useQuery(api.friends.get, { id: user?.id });
 
 
   if (friendList === undefined) {

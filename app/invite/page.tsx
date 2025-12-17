@@ -1,16 +1,17 @@
 'use client';
 
+import { Suspense } from 'react'; // Suspense 임포트
 import { useMutation, useConvexAuth } from 'convex/react';
 import { api } from '@/convex/_generated/api';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { Spinner } from '@/components/spinner';
 import { toast } from 'sonner';
-import { SignInButton, useAuth } from '@clerk/nextjs';
+import { useAuth } from '@clerk/nextjs';
 
-export default function InvitePage() {
+// 기존 로직을 별도 컴포넌트로 분리
+function InviteContent() {
   const { isAuthenticated, isLoading } = useConvexAuth();
-  const { userId } = useAuth(); // Clerk 유저 ID
   const params = useSearchParams();
   const router = useRouter();
   const joinWorkspace = useMutation(api.workspace.joinWorkspace);
@@ -26,7 +27,6 @@ export default function InvitePage() {
     }
 
     if (!isLoading && !isAuthenticated) {
-      // 로그인 안 되어 있으면 로그인 페이지로 이동 + 현재 URL 유지
       router.push(`/sign-in?redirect_url=/invite?workspace=${workspaceId}`);
       return;
     }
@@ -35,13 +35,11 @@ export default function InvitePage() {
       const join = async () => {
         try {
           const result = await joinWorkspace({ workspaceId });
-
           if (result === 'already_member') {
             toast.info('이미 워크스페이스에 참여되어 있어요!');
           } else if (result === 'joined') {
             toast.success('워크스페이스에 참여했어요!');
           }
-
           router.push(`/workspace/${workspaceId}/documents`);
         } catch (err: any) {
           console.error('초대 실패:', err);
@@ -50,7 +48,6 @@ export default function InvitePage() {
           setLoading(false);
         }
       };
-
       join();
     }
   }, [isLoading, isAuthenticated, workspaceId, joinWorkspace, router]);
@@ -66,5 +63,18 @@ export default function InvitePage() {
         <p className="text-sm text-muted-foreground">처리가 완료되었습니다.</p>
       )}
     </div>
+  );
+}
+
+// 최종 export 하는 부분에서 Suspense로 감싸기
+export default function InvitePage() {
+  return (
+    <Suspense fallback={
+      <div className="h-full flex items-center justify-center">
+        <Spinner />
+      </div>
+    }>
+      <InviteContent />
+    </Suspense>
   );
 }

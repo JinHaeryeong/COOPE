@@ -1,4 +1,5 @@
 "use client"
+import { Suspense } from "react";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { api } from "@/convex/_generated/api";
@@ -14,7 +15,7 @@ import AnswerList from "../../_components/answers";
 
 
 
-const InquiryPage = () => {
+const InquiryContent = () => {
     const router = useRouter();
     const searchParams = useSearchParams();
     const inquiryId = searchParams.get("inquiryId");
@@ -22,11 +23,10 @@ const InquiryPage = () => {
     const deleteInquiry = useMutation(api.inquiries.deleteInquiry);
     const userRole = user?.publicMetadata?.role
     const [isanswerOpen, setIsanswerOpen] = useState(false);
+    const inquiry = useQuery(api.inquiries.getInquiry, inquiryId ? { id: inquiryId } : "skip");
     if (!inquiryId) {
         return <p>문의 사항 ID가 유효하지 않습니다.</p>
     }
-    const inquiry = useQuery(api.inquiries.getInquiry, { id: inquiryId });
-
 
     if (inquiry === undefined) {
         return <p>로딩중 ..</p>;
@@ -35,6 +35,7 @@ const InquiryPage = () => {
     if (!inquiry) {
         return <p>문의 사항이 존재하지 않습니다.</p>;
     }
+
     if (user?.id !== inquiry?.userId && userRole !== 'admin') {
         return <p>타인이 작성한 문의는 볼 수 없습니다.</p>
     }
@@ -46,7 +47,7 @@ const InquiryPage = () => {
                 inquiryId: inquiry._id
             });
 
-            if(userRole !== 'admin') {
+            if (userRole !== 'admin') {
                 router.push("/customerService")
             } else {
                 router.push("/csAdmin");
@@ -57,15 +58,16 @@ const InquiryPage = () => {
     }
 
     const handleAnswer = (e: any) => {
-        if(!isanswerOpen) {
+        if (!isanswerOpen) {
             setIsanswerOpen(true);
         }
         else setIsanswerOpen(false);
     }
 
-    const answerClose = () => {setIsanswerOpen(false)};
+    const answerClose = () => { setIsanswerOpen(false) };
 
     return (
+
         <div className="mx-12 min-h-full flex justify-center py-10">
             <div className="h-full w-1/2">
                 <h1 className="text-4xl font-bold mb-6">{inquiry?.title}</h1>
@@ -113,7 +115,7 @@ const InquiryPage = () => {
                 {(inquiry.userId === user?.id || userRole === 'admin') &&
                     <div className="text-right my-2">
                         {userRole === 'admin' &&
-                        <Button variant="outline" className="mr-2" onClick={handleAnswer}>답변</Button>}
+                            <Button variant="outline" className="mr-2" onClick={handleAnswer}>답변</Button>}
                         <AlertDialog>
                             <AlertDialogTrigger asChild>
                                 <Button>삭제</Button>
@@ -133,7 +135,7 @@ const InquiryPage = () => {
                         </AlertDialog>
                     </div>
                 }
-                {isanswerOpen && <AnswerWrite inquiry={inquiryId} onClose={answerClose} userEmail={inquiry.userEmail} userName={inquiry.userName}/>}
+                {isanswerOpen && <AnswerWrite inquiry={inquiryId} onClose={answerClose} userEmail={inquiry.userEmail} userName={inquiry.userName} />}
                 <div><h2 className="text-2xl font-medium">답변</h2></div>
                 <AnswerList postId={inquiryId} />
             </div>
@@ -141,4 +143,10 @@ const InquiryPage = () => {
     );
 }
 
-export default InquiryPage;
+export default function InquiryPage() {
+    return (
+        <Suspense fallback={<p>데이터를 불러오는 중...</p>}>
+            <InquiryContent />
+        </Suspense>
+    );
+}

@@ -6,7 +6,7 @@ import { Logo } from "./logo";
 import { ModeToggle } from "@/components/mode-toggle";
 import Link from "next/link";
 import { Spinner } from "@/components/spinner";
-import { SignInButton, useClerk, UserButton } from '@clerk/clerk-react';  // useClerk 훅 사용
+import { SignInButton, UserButton } from '@clerk/clerk-react';  // useClerk 훅 사용
 import { useConvexAuth } from "convex/react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -22,15 +22,6 @@ export const Navbar = () => {
     const { isAuthenticated, isLoading } = useConvexAuth();
     const scrolled = useScrollTop();
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-
-    const { signOut } = useClerk();  // useClerk 훅을 사용하여 signOut 메서드 가져오기
-
-    const handleSignOut = () => {
-        signOut().then(() => {
-            // 로그아웃 후 리디렉션
-            window.location.href = '/';  // 원하는 URL로 리디렉션
-        });
-    };
 
     const toggleMobileMenu = () => {
         setIsMobileMenuOpen(!isMobileMenuOpen);
