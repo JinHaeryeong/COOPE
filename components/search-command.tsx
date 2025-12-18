@@ -17,7 +17,7 @@ import { useSearch } from "@/hooks/use-search"
 import { api } from "@/convex/_generated/api"
 import { useEffect, useState } from "react"
 
-export function SearchCommand () {
+export function SearchCommand() {
   const { user } = useUser()
   const router = useRouter()
   const { workspaceId } = useParams() as { workspaceId?: string }
@@ -61,10 +61,10 @@ export function SearchCommand () {
 
   return (
     <CommandDialog open={isOpen} onOpenChange={onClose}>
-      <CommandInput placeholder={`Search ${user?.fullName}'s Coope`} />
+      <CommandInput placeholder={`${user?.username}의 Coope에서 검색하기`} />
       <CommandList>
-        <CommandEmpty>No results found.</CommandEmpty>
-        <CommandGroup heading="Documents">
+        <CommandEmpty>결과를 찾을 수 없습니다.</CommandEmpty>
+        <CommandGroup heading="문서">
           {documents?.map(document => (
             <CommandItem
               key={document._id}

@@ -8,8 +8,7 @@ import {
   MediaKind,
   RtpParameters,
   AppData,
-  Transport,
-  Producer
+  Transport
 } from "mediasoup-client/types";
 import { Device as MediaDevice } from "mediasoup-client";
 import "webrtc-adapter";

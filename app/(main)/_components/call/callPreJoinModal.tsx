@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Video, VideoOff, Mic, MicOff } from "lucide-react";
-import CallModal from "./callModal"; // 이걸 내부에 렌더링할 것
+import CallModal from "./call/callModal"; // 이걸 내부에 렌더링할 것
 
 interface CallSettings {
     mic: boolean;
@@ -34,28 +34,28 @@ const CallPreJoinModal: React.FC<CallPreJoinModalProps> = ({ isOpen, onClose, ro
 
     useEffect(() => {
         if (!isOpen || (!camEnabled && !micEnabled)) return; // 아무것도 켜지 않은 상태면 skip
-      
+
         const getPreview = async () => {
-          try {
-            const stream = await navigator.mediaDevices.getUserMedia({
-              video: camEnabled,
-              audio: micEnabled
-            });
-            setPreviewStream(stream);
-            if (videoRef.current) {
-              videoRef.current.srcObject = stream;
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({
+                    video: camEnabled,
+                    audio: micEnabled
+                });
+                setPreviewStream(stream);
+                if (videoRef.current) {
+                    videoRef.current.srcObject = stream;
+                }
+            } catch (err) {
+                console.error("장치 점유 중이거나 접근 실패", err);
             }
-          } catch (err) {
-            console.error("장치 점유 중이거나 접근 실패", err);
-          }
         };
-      
+
         getPreview();
         return () => {
-          previewStream?.getTracks().forEach((track) => track.stop());
+            previewStream?.getTracks().forEach((track) => track.stop());
         };
-      }, [isOpen, camEnabled, micEnabled]);
-      
+    }, [isOpen, camEnabled, micEnabled]);
+
 
     const toggleCam = () => {
         if (!previewStream) return;
@@ -83,8 +83,8 @@ const CallPreJoinModal: React.FC<CallPreJoinModalProps> = ({ isOpen, onClose, ro
                 isOpen={true}
                 onClose={handleClose}
                 roomId={roomId}
-                //settings={callSettings}
-                //stream={previewStream}
+            //settings={callSettings}
+            //stream={previewStream}
             />
         );
     }

@@ -26,7 +26,7 @@ export default function InviteModal({ workspaceId }: Props) {
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent>
         <DialogHeader className="border-b pb-3">
-          <DialogTitle>Invite to Workspace</DialogTitle>
+          <DialogTitle>워크스페이스에 초대하기</DialogTitle>
         </DialogHeader>
 
         <div className="flex items-center justify-between">

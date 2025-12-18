@@ -57,9 +57,9 @@ export const Navigation = () => {
 
   const MIN_WIDTH = 210;
   const MAX_WIDTH = 700;
-  
 
-  // ❗ 조건은 아래에서 처리
+
+  // 조건은 아래에서 처리
   if (isWorkspacePath && !workspaceId) {
     console.log("workspaceId missing in /workspace path");
     return null;
@@ -136,10 +136,10 @@ export const Navigation = () => {
     });
   };
 
-    const onRedirectFriends = () => {
-        toggleSidebar();
-        router.push(`/workspace/${workspaceId}/friends`);
-    }
+  const onRedirectFriends = () => {
+    toggleSidebar();
+    router.push(`/workspace/${workspaceId}/friends`);
+  }
 
   return (
     <>
@@ -168,19 +168,19 @@ export const Navigation = () => {
         </div>
         <div>
           <UserItem />
-          <Item label="Invite" icon={UserPlus} onClick={invite.onOpen} />
+          <Item label="초대" icon={UserPlus} onClick={invite.onOpen} />
           {invite.isOpen && <InviteModal workspaceId={safeWorkspaceId} />}
-          <Item label="Search" icon={Search} isSearch onClick={search.onOpen} />
-          <Item label="Settings" icon={Settings} onClick={settings.onOpen} />
-          <Item onClick={handleCreate} label="New page" icon={PlusCircle} />
+          <Item label="검색" icon={Search} isSearch onClick={search.onOpen} />
+          <Item label="설정" icon={Settings} onClick={settings.onOpen} />
+          <Item onClick={handleCreate} label="새 페이지" icon={PlusCircle} />
         </div>
         <div className="mt-4 text-white">
           <DocumentList />
-          <Item onClick={handleCreate} label="Add a page" icon={Plus} />
+          <Item onClick={handleCreate} label="페이지 추가" icon={Plus} />
           <Item icon={User} label="친구" onClick={onRedirectFriends} />
           <Popover>
             <PopoverTrigger className="w-full mt-4">
-              <Item label="Trash" icon={Trash} />
+              <Item label="휴지통" icon={Trash} />
             </PopoverTrigger>
             <PopoverContent
               className="p-0 w-72"

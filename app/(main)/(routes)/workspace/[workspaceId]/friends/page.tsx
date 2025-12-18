@@ -6,9 +6,9 @@ import { useUser } from "@clerk/clerk-react";
 import { useQuery } from "convex/react";
 import Image from "next/image";
 import { useState } from "react";
-import AddFriend from "../../../../_components/addFriend"; // 친구 추가 버튼과 기능
-import FriendPage from "../../../../_components/friend"; // 친구(요청중, 수락됨)이 있을 경우의 페이지
-import FriendRequestList from "../../../../_components/friendRequestList";
+import AddFriend from "../../../../_components/friends/addFriend"; // 친구 추가 버튼과 기능
+import FriendPage from "../../../../_components/friends/friend"; // 친구(요청중, 수락됨)이 있을 경우의 페이지
+import FriendRequestList from "../../../../_components/friends/friendRequestList";
 
 const ListOfFriends = () => {
   const { user } = useUser();

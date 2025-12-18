@@ -14,7 +14,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { GenericId } from "convex/values";
 import { Phone, Plus, X } from "lucide-react";
-import CallModal from "./callModal";
+import CallModal from "../call/callModal";
 
 const convexSiteUrl = process.env.NEXT_PUBLIC_CONVEX_SITE_URL;
 
@@ -109,11 +109,11 @@ const FriendPage = () => {
     const redirectToCall = () => {
         setIsModalOpen(true); // 모달 열림
     };
-    
-      const closeModal = () => {
+
+    const closeModal = () => {
         setIsModalOpen(false); // 모달 닫힘
     };
-    
+
 
     return (
         <div className="h-full">
@@ -180,7 +180,7 @@ const FriendPage = () => {
                                         <p className="text-gray-600">{selectedFriend.friendEmail}</p>
                                     </div>
                                     <Button variant="outline" className="right-auto rounded-full" onClick={redirectToCall}>
-                                        <Phone/>
+                                        <Phone />
                                     </Button>
                                     <CallModal isOpen={isModalOpen} onClose={closeModal} roomId={selectedFriend.roomId} />
                                 </div>
