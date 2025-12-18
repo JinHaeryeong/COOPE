@@ -10,10 +10,11 @@ export const Heroes = () => {
                     <Image
                         src="/documents.png"
                         fill
+                        priority
                         className="object-contain dark:hidden"
                         alt="Documents"
                     />
-                     <Image
+                    <Image
                         src="/documents-dark.png"
                         fill
                         className="object-contain hidden dark:block"
@@ -25,6 +26,7 @@ export const Heroes = () => {
                     <Image
                         src="/reading.png"
                         fill
+                        priority
                         className="object-contain dark:hidden"
                         alt="Reading"
                     />
