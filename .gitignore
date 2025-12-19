@@ -43,3 +43,5 @@ auth.config
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+coope-stt-*.json
