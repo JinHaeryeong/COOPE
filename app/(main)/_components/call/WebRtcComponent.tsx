@@ -54,8 +54,6 @@ export default function WebRtcComponent({ roomId, onRemoteVideoStream }: WebRtcP
   const [pendingAudio, setPendingAudio] = useState<Blob | null>(null);
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const audioChunksRef = useRef<Blob[]>([]);
-  const sendMessage = useMutation(api.chat.sendMessage);
-  const { userId } = useAuth();
   const createDocument = useMutation(api.documents.create);
   const router = useRouter();
   const params = useParams();
