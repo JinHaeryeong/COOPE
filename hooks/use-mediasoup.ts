@@ -122,8 +122,14 @@ export const useMediasoup = (
 
     const handleNewProducer = useCallback(async (info: ProducerInfo) => {
         const socket = socketRef.current;
+        if (!deviceRef.current || !deviceRef.current.loaded) {
+            console.log("장치 로딩 대기 중... 재시도합니다.");
+            setTimeout(() => handleNewProducer(info), 500);
+            return;
+        }
         const device = deviceRef.current;
-        if (!device || !socket) return;
+
+        if (!socket) return;
 
         const transport = await createRecvTransport();
         const { id, producerId, kind, rtpParameters, appData } = await new Promise<any>((res) => {
@@ -192,7 +198,13 @@ export const useMediasoup = (
         if (type === "screen" && streams.camera) stopMedia("camera");
 
         const stream = type === "camera"
-            ? await navigator.mediaDevices.getUserMedia({ video: { width: 320, height: 240, frameRate: 15 } })
+            ? await navigator.mediaDevices.getUserMedia({
+                video: {
+                    width: { ideal: 640 }, // ideal을 사용하여 유연하게 대응
+                    height: { ideal: 480 },
+                    frameRate: { ideal: 30 }
+                }
+            })
             : await navigator.mediaDevices.getDisplayMedia({ video: true });
 
         const transport = await createSendTransport();
