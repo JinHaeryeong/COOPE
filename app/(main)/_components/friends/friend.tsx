@@ -21,7 +21,7 @@ import ChatInput from "./chat-input";
 
 const convexSiteUrl = process.env.NEXT_PUBLIC_CONVEX_SITE_URL;
 
-export type FriendsListType = FunctionReturnType<typeof api.friends.get>; // getFriendList를 통해 받아오는 return 값을 type으로 가지게 함
+export type FriendsListType = FunctionReturnType<typeof api.friends.get>; // api.friends.get를 통해 받아오는 return 값을 type으로 가지게 함
 export type FriendType = FriendsListType[number]; // 친구 목록의 단일 타입을 얻기 위해서 필요
 interface FriendPageProps {
     initialFriends: FriendsListType; // 구체적인 타입을 넣으면 더좋음
@@ -49,11 +49,9 @@ const FriendPage = ({ initialFriends }: FriendPageProps) => {
     if (!user) {
         return <div className="h-full flex justify-center items-center">유저 정보 로딩중...</div>;
     }
-    const handleMessageInput = (e: any) => {
-        setMessageInput(e.target.value);
-    }
 
-    const handleFrinedClick = async (friend: { friendName: string | undefined; friendEmail: string | undefined; friendIcon: string | undefined; _id: GenericId<"friends">; _creationTime: number; userId: string; friendId: string; status: string; }) => {
+
+    const handleFriendClick = async (friend: { friendName: string | undefined; friendEmail: string | undefined; friendIcon: string | undefined; _id: GenericId<"friends">; _creationTime: number; userId: string; friendId: string; status: string; }) => {
         try {
             const chatRoom = await createOrGetChatRoom({ user1Id: user.id, user2Id: friend.friendId });
 
@@ -145,7 +143,7 @@ const FriendPage = ({ initialFriends }: FriendPageProps) => {
                                             <FriendListItem
                                                 key={friend._id}
                                                 friend={friend}
-                                                onClick={() => handleFrinedClick(friend)}
+                                                onClick={() => handleFriendClick(friend)}
                                                 isSelected={selectedFriend?._id === friend._id} // 현재 선택된 친구인지 체크
                                             />
                                         ))}

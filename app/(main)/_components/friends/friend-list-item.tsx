@@ -26,7 +26,7 @@ const FriendListItem = ({ friend, onClick, isSelected }: FriendListItemProps) =>
 
                 <Avatar className="ml-auto">
                     <AvatarImage src={friend.friendIcon} alt="프로필이미지" />
-                    <AvatarFallback>{friend.friendName?.charAt(0)}</AvatarFallback>
+                    <AvatarFallback>{friend.friendName?.charAt(0) ?? "?"}</AvatarFallback>
                 </Avatar>
             </div>
             <Separator className="my-2" />

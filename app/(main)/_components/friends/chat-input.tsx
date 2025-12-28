@@ -35,6 +35,7 @@ const ChatInput = ({
                     type="file"
                     ref={fileInputRef}
                     className="hidden"
+                    accept="image/*,.hwp,.pdf,.docx,.ppt,.pptx"
                     onChange={(e) => setSelectedFile(e.target.files?.[0] || null)}
                 />
 
@@ -45,7 +46,7 @@ const ChatInput = ({
 
                 {/* 텍스트 입력창 */}
                 <Textarea
-                    placeholder="메세지를 입력해주세요"
+                    placeholder="메시지를 입력해주세요"
                     className="resize-none font-medium min-h-[40px] flex-1" // flex-1로 꽉 채우기
                     value={messageInput}
                     onChange={(e) => setMessageInput(e.target.value)}
